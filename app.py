@@ -68,7 +68,12 @@ def process(update):
                     else:
                         initial(update['message']['from']['id'], update['message']['text'], model[0], model[2:])
                 except:
-                    return
+                    data = {
+                        'chat_id': update['message']['from']['id'],
+                        'text': f"_System has been updated! please re /start_",
+                        'parse_mode': 'Markdown'
+                    }
+                    requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage", data=data)
 def send_users():
     with open('users.txt', 'r') as file:
         requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/sendDocument",params={'chat_id': ADMIN},files={'document': ('Users.txt', io.StringIO(''.join(file.readlines())))})
