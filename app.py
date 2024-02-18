@@ -619,7 +619,7 @@ Punctuation and grammar are used appropriately throughout.
 
 Minor errors are extremely rare and have minimal impact on communication."""
 
-    provider = g4f.Provider.ChatgptDemo
+    provider = g4f.Provider.Aura
     model = "gpt-3.5-turbo"
     response = g4f.ChatCompletion.create(
         model=model,
