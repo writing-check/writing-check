@@ -618,14 +618,17 @@ A wide range of structures is used with full flexibility and control.
 Punctuation and grammar are used appropriately throughout.
 
 Minor errors are extremely rare and have minimal impact on communication."""
-
-    provider = g4f.Provider.Aura
-    model = "gpt-3.5-turbo"
+    
+    auth = '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'
+    provider = g4f.Provider.DeepInfra
+    model = "meta-llama/Llama-2-70b-chat-hf"
     response = g4f.ChatCompletion.create(
         model=model,
         provider=provider,
         messages=[{'role': 'user', 'content': instruction + topic + "\n\nHere is my essay itself\n\n" + query}],
         stream=True,
+        # meta-llama/Llama-2-70b-chat-hf - good feedback
+        # meta-llama/Llama-2-7b-chat-hf - quite strict
     )
     output = ""
     edit_id = requests.post(f'https://api.telegram.org/bot{BOT_TOKEN}/sendMessage',json={'chat_id': user_id, 'text': f'✅ _Your Task {mode} is being checked..._','parse_mode': 'Markdown'}).json()['result']['message_id']
