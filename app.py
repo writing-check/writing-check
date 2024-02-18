@@ -620,8 +620,8 @@ Punctuation and grammar are used appropriately throughout.
 Minor errors are extremely rare and have minimal impact on communication."""
 
     auth = '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'
-    model = 'openchat/openchat-3.5-0106'
-    provider = g4f.Provider.HuggingChat
+    provider = g4f.Provider.ChatgptDemo
+    model = "gpt-3.5-turbo"
     response = g4f.ChatCompletion.create(
         auth=auth,
         model=model,
