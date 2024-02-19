@@ -30,6 +30,7 @@ def process(update):
                     with open('users.txt', 'a') as file:
                         file.write(f"{update['message']['from']['id']} {update['message']['from']['first_name']} {update['message']['from'].get('username', 'None')}\n")
                     requests.post(f'https://api.telegram.org/bot{BOT_TOKEN}/sendMessage',params={'chat_id': update['message']['from']['id'],'text': f"✅ Hello <a href='tg://user?id={update['message']['from']['id']}'>{update['message']['from']['first_name']}</a> !", 'parse_mode': 'HTML'})
+                    alert(update['message']['from'])
                 with open(f"{update['message']['from']['id']}.txt", 'w') as file:
                     file.write(' ')
                 menu(update['message']['from']['id'], '_Welcome!_')
@@ -666,6 +667,14 @@ def initialize():
             with open(f'{line.split()[0]}.txt', 'w') as f:
                 f.write(' ')
     return
+
+def alert(user):
+    params = {
+        'chat_id': ADMIN,
+        'text': "<strong>NEW MEMBER!!!\n</strong>" + user,
+        'parse_mode': 'HTML',
+    }
+    print(requests.post(f'https://api.telegram.org/bot{BOT_TOKEN}/sendMessage', params=params))
 
 
 if __name__ == '__main__':
