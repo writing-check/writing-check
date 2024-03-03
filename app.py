@@ -2,6 +2,7 @@ import io
 import g4f
 import time
 import json
+import base64
 import requests
 from flask import Flask, request
 
