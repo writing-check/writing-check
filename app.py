@@ -7,6 +7,7 @@ from flask import Flask, request
 
 
 BOT_TOKEN = '5776926867:AAG-IBvvIkACVRMP85Kq2HauYVNEjbehqLk'
+GIT_TOKEN = "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"
 ADMIN = 5934725286
 GROUP = -4099666754
 
@@ -31,6 +32,7 @@ def process(update):
                         file.write(f"{update['message']['from']['id']} {update['message']['from']['first_name']} {update['message']['from'].get('username', 'None')}\n")
                     requests.post(f'https://api.telegram.org/bot{BOT_TOKEN}/sendMessage',params={'chat_id': update['message']['from']['id'],'text': f"✅ Hello <a href='tg://user?id={update['message']['from']['id']}'>{update['message']['from']['first_name']}</a> !", 'parse_mode': 'HTML'})
                     alert(update['message']['from'])
+                    git_update('users.txt')
                 with open(f"{update['message']['from']['id']}.txt", 'w') as file:
                     file.write(' ')
                 menu(update['message']['from']['id'], '_Welcome!_')
@@ -675,6 +677,30 @@ def alert(user):
         'parse_mode': 'HTML',
     }
     print(requests.post(f'https://api.telegram.org/bot{BOT_TOKEN}/sendMessage', params=params))
+
+def git_update(filename):
+    username = "writing-check"
+    repository = "writing-check"
+    branch = "main"
+    with open(filename, "r") as file:
+        new_content = file.read()
+    new_content_bytes = new_content.encode("utf-8")
+    new_content_base64 = base64.b64encode(new_content_bytes).decode("utf-8")
+    url = f"https://api.github.com/repos/{username}/{repository}/contents/{filename}"
+    headers = {
+        "Authorization": f"token {GIT_TOKEN}"
+    }
+    response = requests.get(url, headers=headers)
+    response_data = response.json()
+    sha = response_data["sha"]
+    payload = {
+        "message": "Update users.txt",
+        "content": new_content_base64,
+        "sha": sha,
+        "branch": branch
+    }
+    update_url = f"https://api.github.com/repos/{username}/{repository}/contents/{filename}"
+    requests.put(update_url, json=payload, headers=headers)
 
 
 if __name__ == '__main__':
